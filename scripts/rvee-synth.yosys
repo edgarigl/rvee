@@ -1,0 +1,29 @@
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-pcgen.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-fetch.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-decode.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-alu.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-exec.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-csr.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-rf.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-mem.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-wrapper.sv
+read_verilog -sv -formal -Irtl rtl/rvee/rvee-wrapper.v
+read_verilog -sv -formal -Irtl rtl/plic/plic.sv
+read_verilog -sv -formal -Irtl rtl/clint/clint.sv
+read_verilog -sv -formal -Irtl tb/rvee_tb.sv
+#read_verilog -sv -formal -Irtl bd.v
+#read_verilog -sv -formal -Irtl /home/edgar/vivado/rvee_test/rvee_test.srcs/sources_1/new/top.v
+#read_verilog -sv -formal -Irtl scripts/vivado/top.v
+write_verilog -norename -noattr top.v
+opt_clean -purge
+write_verilog -noattr -renameprefix _auto_ top2.v
+#synth -top top
+
+proc; opt; fsm; opt; memory; opt;
+#synth_xilinx -family xcu -top rvee_wrapper
+synth_xilinx -family xcu -top rvee_tb
+write_edif x.edif
+
+# Xilinx
+# link_design -part xczu9eg-ffvb1156-2-e -top rvee_core
